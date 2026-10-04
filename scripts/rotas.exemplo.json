@@ -1,0 +1,82 @@
+{
+  "_leia": "Copie para rotas.json e troque os caminhos e campos pelos reais do site. Placeholders aceitos nos valores: {{n}} (número único), {{cidade}}, {{vagaId}}, {{categoria}}.",
+
+  "baseUrl": "https://empregavalemais.com.br",
+
+  "cidades": ["sao-jose-dos-campos", "taubate", "jacarei", "pindamonhangaba", "caraguatatuba"],
+  "categorias": ["administrativo", "industria", "comercio"],
+
+  "navegacao": {
+    "home": "/",
+    "cidade": "/cidade/{{cidade}}",
+    "busca": "/vagas?cidade={{cidade}}&categoria={{categoria}}",
+    "vaga": "/vaga/{{vagaId}}",
+    "prestadores": "/servicos?cidade={{cidade}}",
+    "estaticos": ["/favicon.ico"]
+  },
+
+  "listaVagas": {
+    "path": "/vagas?cidade={{cidade}}",
+    "regexId": "/vaga/(\\d+)"
+  },
+
+  "cadastros": {
+    "candidatura": {
+      "peso": 15,
+      "method": "POST",
+      "path": "/api/vagas/{{vagaId}}/candidatura",
+      "tipo": "multipart",
+      "campos": {
+        "nome": "Teste Carga {{n}}",
+        "email": "teste{{n}}@teste-carga.invalid",
+        "whatsapp": "12999{{n}}",
+        "apresentacao": "Candidatura gerada por teste de carga."
+      },
+      "campoArquivo": "curriculo",
+      "statusOk": [200, 201, 302]
+    },
+    "alerta": {
+      "peso": 10,
+      "method": "POST",
+      "path": "/api/alertas",
+      "tipo": "json",
+      "campos": {
+        "whatsapp": "12999{{n}}",
+        "cidade": "{{cidade}}"
+      },
+      "statusOk": [200, 201]
+    },
+    "vaga": {
+      "peso": 3,
+      "method": "POST",
+      "path": "/api/anuncios",
+      "tipo": "json",
+      "campos": {
+        "tipo": "vaga",
+        "titulo": "[TESTE-CARGA] Vaga {{n}}",
+        "descricao": "Vaga criada por teste de carga. Não é real.",
+        "salario": "",
+        "cidade": "{{cidade}}",
+        "categoria": "{{categoria}}",
+        "contato": ["email"],
+        "email": "empresa{{n}}@teste-carga.invalid"
+      },
+      "statusOk": [200, 201]
+    },
+    "prestador": {
+      "peso": 2,
+      "method": "POST",
+      "path": "/api/anuncios",
+      "tipo": "json",
+      "campos": {
+        "tipo": "servico",
+        "nome": "[TESTE-CARGA] Prestador {{n}}",
+        "email": "prestador{{n}}@teste-carga.invalid",
+        "telefone": "12999{{n}}",
+        "cidade": "{{cidade}}",
+        "descricao": "Descrição gerada por teste de carga para validar o desempenho do cadastro de prestadores de serviço. Este texto existe apenas para cumprir o mínimo de trezentos caracteres exigido pelo formulário, e o registro é marcado como teste e apagado ao final do teste de carga do site."
+      },
+      "statusOk": [200, 201]
+    }
+  }
+}
